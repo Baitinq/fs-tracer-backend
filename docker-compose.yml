@@ -1,6 +1,0 @@
-services:
-  cloud-provider-kind:
-    build: https://github.com/kubernetes-sigs/cloud-provider-kind.git#main
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    network_mode: kind
