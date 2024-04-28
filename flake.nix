@@ -17,7 +17,7 @@
       {
         devShells.default = mkShell {
           buildInputs = [
-		  cargo
+	    go 
           ];
         };
       }
