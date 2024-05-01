@@ -20,6 +20,7 @@
             bazel
             buildozer
             go
+            gopls
           ];
         };
       }
