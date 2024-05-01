@@ -8,9 +8,13 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/", handleRequest)
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w, "Hello folks!")
+	})
+	mux.HandleFunc("/payload", handleRequest)
 
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8080", mux)
 }
 
 func handleRequest(w http.ResponseWriter, r *http.Request) {
