@@ -1,0 +1,49 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_cross_binary", "go_library")
+load("@rules_oci//oci:defs.bzl", "oci_image", "oci_push", "oci_tarball")
+load("@rules_pkg//:pkg.bzl", "pkg_tar")
+
+go_library(
+    name = "cmd_lib",
+    srcs = ["main.go"],
+    importpath = "github.com/Baitinq/rest-api/src/rest-api/cmd",
+    visibility = ["//visibility:private"],
+)
+
+go_binary(
+    name = "cmd",
+    embed = [":cmd_lib"],
+    visibility = ["//visibility:public"],
+)
+
+go_cross_binary(
+    name = "cmd_arm64",
+    platform = "@io_bazel_rules_go//go/toolchain:linux_arm64",
+    target = ":cmd",
+    visibility = ["//visibility:public"],
+)
+
+pkg_tar(
+    name = "tar",
+    srcs = [":cmd_arm64"],
+)
+
+oci_image(
+    name = "image",
+    base = "@distroless_base",
+    entrypoint = ["/cmd_arm64"],
+    # architecture = "arm64",
+    # os = "linux",
+    tars = [":tar"],
+)
+
+oci_tarball(
+    name = "tarball",
+    image = ":image",
+    repo_tags = [],
+)
+
+oci_push(
+    name = "push",
+    image = ":image",
+    repository = "docker.io/baitinq/fs-tracer",
+)

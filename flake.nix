@@ -17,7 +17,9 @@
       {
         devShells.default = mkShell {
           buildInputs = [
-	    go 
+            bazel
+            buildozer
+            go
           ];
         };
       }
