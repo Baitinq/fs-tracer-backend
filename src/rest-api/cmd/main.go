@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 )
 
@@ -19,4 +20,5 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprint(w, "Hello, World!", string(bytes))
+	log.Println("Request received", r.RemoteAddr, string(bytes))
 }
