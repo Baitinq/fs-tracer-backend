@@ -6,6 +6,7 @@ metadata:
     {{- include "rest-api.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
+  externalTrafficPolicy: Local
   ports:
     - port: 9999
       targetPort: 8080
