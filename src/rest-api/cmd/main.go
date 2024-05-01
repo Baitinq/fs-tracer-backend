@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 )
 
@@ -12,5 +13,10 @@ func main() {
 }
 
 func handleRequest(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Hello, World!", r.Body)
+	bytes, err := io.ReadAll(io.Reader(r.Body))
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Fprint(w, "Hello, World!", string(bytes))
 }
