@@ -16,14 +16,14 @@ type Handler struct {
 	queueName string
 }
 
-func NewHandler(ch *amqp.Channel, queueName string) *Handler {
-	return &Handler{
+func NewHandler(ch *amqp.Channel, queueName string) Handler {
+	return Handler{
 		ch:        ch,
 		queueName: queueName,
 	}
 }
 
-func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	bytes, err := io.ReadAll(io.Reader(r.Body))
 	if err != nil {
 		log.Fatal(err)

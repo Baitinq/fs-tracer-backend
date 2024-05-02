@@ -11,15 +11,15 @@ type Processor struct {
 	queueName string
 }
 
-func NewProcessor(ch *amqp.Channel, queueName string) *Processor {
+func NewProcessor(ch *amqp.Channel, queueName string) Processor {
 	log.Println("Created processor")
-	return &Processor{
+	return Processor{
 		ch:        ch,
 		queueName: queueName,
 	}
 }
 
-func (p *Processor) ProcessMessages() {
+func (p Processor) ProcessMessages() {
 	msgs, err := p.ch.Consume(
 		p.queueName, // queue
 		"",          // consumer
