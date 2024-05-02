@@ -7,6 +7,7 @@ go_library(
     srcs = ["main.go"],
     importpath = "github.com/Baitinq/rest-api/src/rest-api/cmd",
     visibility = ["//visibility:private"],
+    deps = ["@com_github_rabbitmq_amqp091_go//:go_default_library"],
 )
 
 go_binary(
