@@ -26,7 +26,7 @@ func main() {
 			DualStack: true,
 		},
 		Topic:     "topic-A",
-		Partition: 0,    //TODO: What
+		Partition: 0,
 		MaxBytes:  10e6, // 10MB
 	})
 	processor := processor.NewProcessor(kafka_reader)
