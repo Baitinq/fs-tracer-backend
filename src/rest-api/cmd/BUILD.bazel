@@ -5,9 +5,12 @@ load("@rules_pkg//:pkg.bzl", "pkg_tar")
 go_library(
     name = "cmd_lib",
     srcs = ["main.go"],
-    importpath = "github.com/Baitinq/rest-api/src/rest-api/cmd",
+    importpath = "github.com/Baitinq/fs-tracer-backend/src/rest-api/cmd",
     visibility = ["//visibility:private"],
-    deps = ["@com_github_rabbitmq_amqp091_go//:go_default_library"],
+    deps = [
+        "//src/rest-api/handler",
+        "@com_github_rabbitmq_amqp091_go//:amqp091-go",
+    ],
 )
 
 go_binary(

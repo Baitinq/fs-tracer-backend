@@ -1,14 +1,12 @@
 package main
 
 import (
-	"context"
 	"fmt"
-	"io"
 	"log"
 	"net/http"
 	"os"
-	"time"
 
+	"github.com/Baitinq/fs-tracer-backend/src/rest-api/handler"
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
@@ -41,32 +39,13 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-
-	body := "Hello World!"
-	ch.PublishWithContext(ctx, "", q.Name, false, false, amqp.Publishing{
-		ContentType: "text/plain",
-		Body:        []byte(body),
-	})
-
-	log.Println(" [x] Sent", body)
+	handler := handler.NewHandler(ch, q.Name)
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "Hello folks!")
 	})
-	mux.HandleFunc("/payload", handleRequest)
+	mux.Handle("/payload", handler)
 
 	http.ListenAndServe(":8080", mux)
-}
-
-func handleRequest(w http.ResponseWriter, r *http.Request) {
-	bytes, err := io.ReadAll(io.Reader(r.Body))
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Fprint(w, "Hello, World!", string(bytes))
-	log.Println("Request received", r.RemoteAddr, string(bytes))
 }

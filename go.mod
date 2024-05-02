@@ -1,4 +1,4 @@
-module github.com/Baitinq/rest-api
+module github.com/Baitinq/fs-tracer-backend
 
 go 1.22.2
 

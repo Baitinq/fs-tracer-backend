@@ -1,0 +1,9 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "handler",
+    srcs = ["handler.go"],
+    importpath = "github.com/Baitinq/fs-tracer-backend/src/rest-api/handler",
+    visibility = ["//visibility:public"],
+    deps = ["@com_github_rabbitmq_amqp091_go//:amqp091-go"],
+)
