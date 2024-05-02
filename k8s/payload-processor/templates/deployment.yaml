@@ -34,11 +34,11 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
-          - name: RABBITMQ_PASSWORD
+          - name: KAFKA_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: rabbitmq
-                key: rabbitmq-password
+                name: kafka-user-passwords
+                key: client-passwords
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

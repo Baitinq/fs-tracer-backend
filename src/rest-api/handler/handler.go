@@ -8,18 +8,16 @@ import (
 	"net/http"
 	"time"
 
-	amqp "github.com/rabbitmq/amqp091-go"
+	"github.com/segmentio/kafka-go"
 )
 
 type Handler struct {
-	ch        *amqp.Channel
-	queueName string
+	kafka_writer *kafka.Writer
 }
 
-func NewHandler(ch *amqp.Channel, queueName string) Handler {
+func NewHandler(kafka_writer *kafka.Writer) Handler {
 	return Handler{
-		ch:        ch,
-		queueName: queueName,
+		kafka_writer: kafka_writer,
 	}
 }
 
@@ -34,11 +32,14 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 
-	go h.ch.PublishWithContext(ctx, "", h.queueName, false, false, amqp.Publishing{
-		ContentType: "text/plain",
-		Body:        []byte(body),
+	err = h.kafka_writer.WriteMessages(ctx, kafka.Message{
+		Key:   []byte("key-A"),
+		Value: []byte(body),
 	})
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	fmt.Fprint(w, "Hello, World!", string(bytes))
-	log.Println("Request received", r.RemoteAddr, string(bytes))
+	log.Println("Request received :)", r.RemoteAddr, string(bytes))
 }

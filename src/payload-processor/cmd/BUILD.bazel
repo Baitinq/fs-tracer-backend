@@ -9,7 +9,8 @@ go_library(
     visibility = ["//visibility:private"],
     deps = [
         "//src/payload-processor/processor",
-        "@com_github_rabbitmq_amqp091_go//:amqp091-go",
+        "@com_github_segmentio_kafka_go//:kafka-go",
+        "@com_github_segmentio_kafka_go//sasl/plain",
     ],
 )
 
