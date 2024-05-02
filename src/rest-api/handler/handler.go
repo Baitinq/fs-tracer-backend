@@ -26,7 +26,7 @@ func NewHandler(ch *amqp.Channel, queueName string) *Handler {
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	bytes, err := io.ReadAll(io.Reader(r.Body))
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	body := fmt.Sprint("Hello World!", r.RemoteAddr, string(bytes))

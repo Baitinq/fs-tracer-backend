@@ -1,0 +1,9 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "processor",
+    srcs = ["processor.go"],
+    importpath = "github.com/Baitinq/fs-tracer-backend/src/payload-processor/processor",
+    visibility = ["//visibility:public"],
+    deps = ["@com_github_rabbitmq_amqp091_go//:amqp091-go"],
+)

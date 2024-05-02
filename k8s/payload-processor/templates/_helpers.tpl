@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "payloads-processor.name" -}}
+{{- define "payload-processor.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "payloads-processor.fullname" -}}
+{{- define "payload-processor.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "payloads-processor.chart" -}}
+{{- define "payload-processor.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "payloads-processor.labels" -}}
-helm.sh/chart: {{ include "payloads-processor.chart" . }}
-{{ include "payloads-processor.selectorLabels" . }}
+{{- define "payload-processor.labels" -}}
+helm.sh/chart: {{ include "payload-processor.chart" . }}
+{{ include "payload-processor.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "payloads-processor.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "payloads-processor.name" . }}
+{{- define "payload-processor.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "payload-processor.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "payloads-processor.serviceAccountName" -}}
+{{- define "payload-processor.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "payloads-processor.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "payload-processor.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

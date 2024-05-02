@@ -3,10 +3,9 @@ package main
 import (
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 
-	"github.com/Baitinq/fs-tracer-backend/src/rest-api/handler"
+	"github.com/Baitinq/fs-tracer-backend/src/payload-processor/processor"
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
@@ -39,13 +38,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	handler := handler.NewHandler(ch, q.Name)
-
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, "Hello folks!")
-	})
-	mux.Handle("/payload", handler)
-
-	http.ListenAndServe(":8080", mux)
+	processor := processor.NewProcessor(ch, q.Name)
+	processor.ProcessMessages()
 }
