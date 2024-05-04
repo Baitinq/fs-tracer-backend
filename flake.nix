@@ -17,6 +17,12 @@
       {
         devShells.default = mkShell {
           buildInputs = [
+            helmsman
+            (wrapHelm kubernetes-helm {
+              plugins = with kubernetes-helmPlugins; [
+                helm-diff
+              ];
+            })
             bazel
             buildozer
             go

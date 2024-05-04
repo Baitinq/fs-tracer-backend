@@ -1,0 +1,45 @@
+# Helmsman
+
+helmRepos:
+  metallb: https://metallb.github.io/metallb
+
+namespaces:
+  default:
+  metallb-system:
+
+apps:
+  metallb:
+    namespace: metallb-system
+    enabled: true
+    wait: true
+    chart: metallb/metallb
+    version: 0.14.5
+    valuesFile: metallb.yml
+
+  kafka:
+    namespace: default
+    enabled: true
+    wait: true
+    chart: oci://registry-1.docker.io/bitnamicharts/kafka
+    version: 28.1.1
+    set:
+      controller.replicaCount: 1
+      controller.livenessProbe.initialDelaySeconds: 120
+
+  payload-processor:
+    namespace: default
+    enabled: true
+    wait: true
+    chart: payload-processor
+    version: 0.1.0
+    set:
+      image.tag: "payload-processor-$COMMIT_SHA"
+
+  rest-api:
+    namespace: default
+    enabled: true
+    wait: true
+    chart: rest-api
+    version: 0.1.0
+    set:
+      image.tag: "rest-api-$COMMIT_SHA"
