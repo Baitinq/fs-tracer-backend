@@ -1,0 +1,16 @@
+env:
+  - name: KAFKA_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: kafka-user-passwords
+        key: client-passwords
+  - name: KAFKA_CLUSTERS_0_NAME
+    value: local
+  - name: KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
+    value: "kafka.default.svc.cluster.local:9092"
+  - name: KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL
+    value: SASL_PLAINTEXT
+  - name: KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM
+    value: PLAIN
+  - name: KAFKA_CLUSTERS_0_PROPERTIES_SASL_JAAS_CONFIG
+    value: org.apache.kafka.common.security.plain.PlainLoginModule required username="user1" password="$(KAFKA_PASSWORD)";

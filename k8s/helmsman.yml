@@ -1,5 +1,8 @@
 # Helmsman
 
+helmRepos:
+  kafka-ui: https://provectus.github.io/kafka-ui-charts
+
 namespaces:
   default:
   metallb-system:
@@ -31,12 +34,21 @@ apps:
         log.retention.hours=24
         log.retention.bytes=2147483648
 
+  # To enable: helm install kafka-ui kafka-ui/kafka-ui -f kafka-ui.yml --version 0.7.6
+  kafka-ui:
+    namespace: default
+    enabled: false
+    chart: kafka-ui/kafka-ui
+    version: 0.7.6
+    priority: -2
+    valuesFile: kafka-ui.yml
+
   payload-processor:
     namespace: default
     enabled: true
     chart: payload-processor
     version: 0.1.0
-    priority: -2
+    priority: -1
     set:
       image.tag: "payload-processor-$COMMIT_SHA"
 
