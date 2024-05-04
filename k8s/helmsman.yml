@@ -1,8 +1,5 @@
 # Helmsman
 
-helmRepos:
-  metallb: https://metallb.github.io/metallb
-
 namespaces:
   default:
   metallb-system:
@@ -12,8 +9,8 @@ apps:
     namespace: metallb-system
     enabled: true
     wait: true
-    chart: metallb/metallb
-    version: 0.14.5
+    chart: oci://registry-1.docker.io/bitnamicharts/metallb
+    version: 6.1.3
     valuesFile: metallb.yml
     priority: -4
 
