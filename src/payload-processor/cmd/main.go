@@ -25,9 +25,9 @@ func main() {
 			Timeout:   10 * time.Second,
 			DualStack: true,
 		},
-		Topic:     "topic-A",
-		Partition: 0,
-		MaxBytes:  10e6, // 10MB
+		Topic:    "topic-A",
+		GroupID:  "group-A",
+		MaxBytes: 10e6, // 10MB
 	})
 	processor := processor.NewProcessor(kafka_reader)
 	processor.ProcessMessages()
