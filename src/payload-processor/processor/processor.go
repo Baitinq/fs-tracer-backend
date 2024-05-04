@@ -26,7 +26,7 @@ func (p Processor) ProcessMessages() {
 		if err != nil {
 			break
 		}
-		fmt.Printf("(%s)message at offset %d: %s = %s\n", time.Now().String(), m.Offset, string(m.Key), string(m.Value))
+		fmt.Printf("(%s): message at offset %d: %s = %s\n", time.Now().String(), m.Offset, string(m.Key), string(m.Value))
 	}
 
 	if err := p.kafka_reader.Close(); err != nil {
