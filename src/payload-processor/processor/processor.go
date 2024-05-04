@@ -63,7 +63,16 @@ func (p Processor) process(ctx context.Context, cancel context.CancelFunc) {
 			cancel()
 			break
 		}
-		fmt.Printf("(%s): message at offset %d: %s = %s\n", time.Now().String(), m.Offset, string(m.Key), string(m.Value))
+		err = p.handleMessage(m)
+		if err != nil {
+			log.Println("failed to handle message:", err)
+			continue
+		}
 		p.kafka_reader.CommitMessages(ctx, m)
 	}
+}
+
+func (p Processor) handleMessage(m kafka.Message) error {
+	fmt.Printf("(%s): message at offset %d: %s = %s\n", time.Now().String(), m.Offset, string(m.Key), string(m.Value))
+	return nil
 }

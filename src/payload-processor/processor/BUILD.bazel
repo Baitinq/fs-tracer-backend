@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "processor",
@@ -6,4 +6,14 @@ go_library(
     importpath = "github.com/Baitinq/fs-tracer-backend/src/payload-processor/processor",
     visibility = ["//visibility:public"],
     deps = ["@com_github_segmentio_kafka_go//:kafka-go"],
+)
+
+go_test(
+    name = "processor_test",
+    srcs = ["processor_test.go"],
+    embed = [":processor"],
+    deps = [
+        "@com_github_segmentio_kafka_go//:kafka-go",
+        "@com_github_stretchr_testify//require",
+    ],
 )
