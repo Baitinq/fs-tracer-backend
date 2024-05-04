@@ -29,6 +29,6 @@ func main() {
 		GroupID:  "group-A",
 		MaxBytes: 10e6, // 10MB
 	})
-	processor := processor.NewProcessor(kafka_reader)
+	processor := processor.NewProcessor(kafka_reader, 4)
 	processor.ProcessMessages()
 }

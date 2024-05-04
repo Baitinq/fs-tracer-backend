@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"sync"
 	"syscall"
 	"time"
 
@@ -14,18 +15,19 @@ import (
 
 type Processor struct {
 	kafka_reader *kafka.Reader
+	concurrency  int
 }
 
-func NewProcessor(kafka_reader *kafka.Reader) Processor {
-	log.Println("Created processor")
+func NewProcessor(kafka_reader *kafka.Reader, concurrency int) Processor {
+	log.Println("Created processor with concurrency: ", concurrency)
 	return Processor{
 		kafka_reader: kafka_reader,
+		concurrency:  concurrency,
 	}
 }
 
 func (p Processor) ProcessMessages() {
 	signals := make(chan os.Signal, 1)
-
 	signal.Notify(signals, syscall.SIGINT, syscall.SIGKILL)
 
 	ctx, cancel := context.WithCancel(context.Background())
@@ -36,16 +38,32 @@ func (p Processor) ProcessMessages() {
 		log.Println("Got signal: ", sig)
 		cancel()
 	}()
-	for {
-		m, err := p.kafka_reader.FetchMessage(ctx)
-		if err != nil {
-			log.Panic("failed to fetch message:", err)
-		}
-		fmt.Printf("(%s): message at offset %d: %s = %s\n", time.Now().String(), m.Offset, string(m.Key), string(m.Value))
-		p.kafka_reader.CommitMessages(ctx, m)
+
+	wg := sync.WaitGroup{}
+	wg.Add(p.concurrency)
+	for i := 0; i < p.concurrency; i++ {
+		go func() {
+			defer wg.Done()
+			p.process(ctx, cancel)
+		}()
 	}
+
+	wg.Wait()
 
 	if err := p.kafka_reader.Close(); err != nil {
 		log.Fatal("failed to close reader:", err)
+	}
+}
+
+func (p Processor) process(ctx context.Context, cancel context.CancelFunc) {
+	for {
+		m, err := p.kafka_reader.FetchMessage(ctx)
+		if err != nil {
+			log.Println("failed to fetch message:", err)
+			cancel()
+			break
+		}
+		fmt.Printf("(%s): message at offset %d: %s = %s\n", time.Now().String(), m.Offset, string(m.Key), string(m.Value))
+		p.kafka_reader.CommitMessages(ctx, m)
 	}
 }
