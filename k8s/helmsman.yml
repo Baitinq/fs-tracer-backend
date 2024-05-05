@@ -14,7 +14,16 @@ apps:
     wait: true
     chart: oci://registry-1.docker.io/bitnamicharts/metallb
     version: 6.1.3
-    valuesFile: metallb.yml
+    priority: -5
+  
+  # When deleting the resource this will get stuck as it should be deleted before "metallib".
+  # To fix it, run: k delete secret sh.helm.release.v1.metallb-config.v1
+  metallb-config:
+    namespace: metallb-system
+    enabled: true
+    wait: true
+    chart: metallb-config
+    version: 0.1.0
     priority: -4
 
   kafka:
