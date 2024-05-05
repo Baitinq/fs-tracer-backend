@@ -41,9 +41,9 @@ func main() {
 				Password: kafka_password,
 			},
 		},
-		Topic:                  "topic-A",
-		Balancer:               &kafka.LeastBytes{},
-		Async:                  true,
+		Topic:    "topic-A",
+		Balancer: &kafka.LeastBytes{},
+		// Async:                  true,
 		AllowAutoTopicCreation: true,
 	}
 
