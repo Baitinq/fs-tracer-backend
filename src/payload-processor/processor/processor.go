@@ -73,6 +73,6 @@ func (p Processor) process(ctx context.Context, cancel context.CancelFunc) {
 }
 
 func (p Processor) handleMessage(m kafka.Message) error {
-	fmt.Printf("(%s): message at offset %d: %s = %s\n", time.Now().String(), m.Offset, string(m.Key), string(m.Value))
+	fmt.Printf("(%s): message at paritition %d: offset %d: %s = %s\n", time.Now().String(), m.Partition, m.Offset, string(m.Key), string(m.Value))
 	return nil
 }
