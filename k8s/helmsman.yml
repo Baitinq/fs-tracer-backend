@@ -36,12 +36,12 @@ apps:
     set:
       controller.replicaCount: 1
       controller.livenessProbe.initialDelaySeconds: 120
-      provisioning.numPartitions: 2
       extraConfig: |
         offsets.topic.replication.factor=1
         transaction.state.log.replication.factor=1
         log.retention.hours=24
         log.retention.bytes=2147483648
+        num.partitions=2
 
   # To enable: helm install kafka-ui kafka-ui/kafka-ui -f kafka-ui.yml --version 0.7.6
   kafka-ui:
