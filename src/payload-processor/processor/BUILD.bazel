@@ -2,10 +2,18 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "processor",
-    srcs = ["processor.go"],
+    srcs = [
+        "db.go",
+        "mock_db.go",
+        "processor.go",
+    ],
     importpath = "github.com/Baitinq/fs-tracer-backend/src/payload-processor/processor",
     visibility = ["//visibility:public"],
-    deps = ["@com_github_segmentio_kafka_go//:kafka-go"],
+    deps = [
+        "//vendor/github.com/jmoiron/sqlx",
+        "//vendor/github.com/segmentio/kafka-go",
+        "//vendor/go.uber.org/mock/gomock",
+    ],
 )
 
 go_test(
@@ -13,7 +21,8 @@ go_test(
     srcs = ["processor_test.go"],
     embed = [":processor"],
     deps = [
-        "@com_github_segmentio_kafka_go//:kafka-go",
-        "@com_github_stretchr_testify//require",
+        "//vendor/github.com/segmentio/kafka-go",
+        "//vendor/github.com/stretchr/testify/require",
+        "//vendor/go.uber.org/mock/gomock",
     ],
 )

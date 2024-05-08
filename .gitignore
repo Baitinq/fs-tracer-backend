@@ -3,3 +3,5 @@
 /bazel-*
 
 .helmsman-tmp/
+
+vendor/

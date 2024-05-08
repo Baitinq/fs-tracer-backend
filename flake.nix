@@ -27,6 +27,7 @@
             buildozer
             go
             gopls
+            mockgen
           ];
         };
       }

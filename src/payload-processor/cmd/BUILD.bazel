@@ -9,8 +9,10 @@ go_library(
     visibility = ["//visibility:private"],
     deps = [
         "//src/payload-processor/processor",
-        "@com_github_segmentio_kafka_go//:kafka-go",
-        "@com_github_segmentio_kafka_go//sasl/plain",
+        "//vendor/github.com/jmoiron/sqlx",
+        "//vendor/github.com/lib/pq",
+        "//vendor/github.com/segmentio/kafka-go",
+        "//vendor/github.com/segmentio/kafka-go/sasl/plain",
     ],
 )
 

@@ -4,6 +4,9 @@
 
 replicaCount: 1
 
+db:
+  password: ""
+
 image:
   repository: docker.io/baitinq/fs-tracer
   pullPolicy: IfNotPresent

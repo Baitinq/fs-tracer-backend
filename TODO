@@ -1,2 +1,4 @@
-cassandra
+better managing of secrets (maybe we shouldnt have environment variables)
+add db migrations
+add db tests
 nixos-k3s repo
