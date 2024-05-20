@@ -18,9 +18,11 @@ func TestProcessMessage(t *testing.T) {
 
 	message := []byte("test")
 
-	mockdb.EXPECT().TestInsert(gomock.Any(), string(message)).Return(nil)
+	ctx := context.Background()
 
-	err := processor.handleMessage(context.Background(), kafka.Message{Value: message})
+	mockdb.EXPECT().TestInsert(ctx, string(message)).Return(nil)
+
+	err := processor.handleMessage(ctx, kafka.Message{Value: message})
 
 	require.NoError(t, err)
 }
