@@ -5,5 +5,5 @@ go_library(
     srcs = ["handler.go"],
     importpath = "github.com/Baitinq/fs-tracer-backend/src/rest-api/handler",
     visibility = ["//visibility:public"],
-    deps = ["//vendor/github.com/segmentio/kafka-go"],
+    deps = ["@com_github_segmentio_kafka_go//:kafka-go"],
 )

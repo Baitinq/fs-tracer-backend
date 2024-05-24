@@ -33,7 +33,7 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	defer cancel()
 
 	err = h.kafka_writer.WriteMessages(ctx, kafka.Message{
-		Key:   []byte("key-A"), //TODO: This routes to a partition. We should probably route by agent UUID
+		Key:   []byte("key"), //TODO:This routes to a partition. We should probably route by agent UUID TODO: wont this negate having multiple topics
 		Value: []byte(body),
 	})
 	if err != nil {
