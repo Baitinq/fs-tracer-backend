@@ -1,3 +1,6 @@
 common --experimental_enable_bzlmod
 
-build --workspace_status_command="echo STABLE_GIT_SHA $(git rev-parse --short HEAD)"
+build --workspace_status_command='sh -c "\
+echo STABLE_GIT_SHA $(git rev-parse --short HEAD); \
+echo DB_PASSWORD $DB_PASSWORD \
+"'

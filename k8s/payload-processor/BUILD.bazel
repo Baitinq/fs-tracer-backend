@@ -1,0 +1,14 @@
+load("@rules_helm//helm:defs.bzl", "helm_chart")
+
+helm_chart(
+    name = "chart",
+    chart = "Chart.yaml",
+    images = ["//src/payload-processor/cmd:push"],
+    install_name = "payload-processor",
+    stamp = 1,
+    substitutions = {
+        "IMAGE_TAG": "payload-processor-{STABLE_GIT_SHA}",
+        "DB_PASSWORD": "{DB_PASSWORD}"
+    },
+    values = "values.yaml",
+)

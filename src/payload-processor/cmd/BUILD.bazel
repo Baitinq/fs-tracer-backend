@@ -1,3 +1,4 @@
+load("@aspect_bazel_lib//lib:expand_template.bzl", "expand_template")
 load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_cross_binary", "go_library")
 load("@rules_oci//oci:defs.bzl", "oci_image", "oci_push", "oci_tarball")
 load("@rules_pkg//:pkg.bzl", "pkg_tar")
@@ -14,6 +15,12 @@ go_library(
         "@com_github_segmentio_kafka_go//:kafka-go",
         "@com_github_segmentio_kafka_go//sasl/plain",
     ],
+)
+
+go_binary(
+    name = "cmd",
+    embed = [":cmd_lib"],
+    visibility = ["//visibility:public"],
 )
 
 go_cross_binary(
@@ -43,14 +50,18 @@ oci_tarball(
     repo_tags = [],
 )
 
+expand_template(
+    name = "stamped",
+    out = "_stamped.tags.txt",
+    stamp = 1,
+    stamp_substitutions = {"tag": "payload-processor-{{STABLE_GIT_SHA}}"},
+    template = ["tag"],
+)
+
 oci_push(
     name = "push",
     image = ":image",
+    remote_tags = ":stamped",
     repository = "docker.io/baitinq/fs-tracer",
-)
-
-go_binary(
-    name = "cmd",
-    embed = [":cmd_lib"],
     visibility = ["//visibility:public"],
 )
