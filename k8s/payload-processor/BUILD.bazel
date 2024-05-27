@@ -8,7 +8,7 @@ helm_chart(
     stamp = 1,
     substitutions = {
         "IMAGE_TAG": "payload-processor-{STABLE_GIT_SHA}",
-        "DB_PASSWORD": "{DB_PASSWORD}"
+        "DB_PASSWORD": "{DB_PASSWORD}",
     },
     values = "values.yaml",
 )

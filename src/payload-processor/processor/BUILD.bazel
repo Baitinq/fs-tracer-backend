@@ -5,11 +5,13 @@ go_library(
     srcs = [
         "db.go",
         "mock_db.go",
+        "model.go",
         "processor.go",
     ],
     importpath = "github.com/Baitinq/fs-tracer-backend/src/payload-processor/processor",
     visibility = ["//visibility:public"],
     deps = [
+        "@com_github_google_uuid//:uuid",
         "@com_github_jmoiron_sqlx//:sqlx",
         "@com_github_segmentio_kafka_go//:kafka-go",
         "@org_uber_go_mock//gomock",

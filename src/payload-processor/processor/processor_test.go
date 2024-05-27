@@ -3,6 +3,7 @@ package processor
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/segmentio/kafka-go"
 	"github.com/stretchr/testify/require"
@@ -16,11 +17,23 @@ func TestProcessMessage(t *testing.T) {
 		db: mockdb,
 	}
 
-	message := []byte("test")
+	message := []byte(`
+	{
+		"user_id": "1",
+		"absolute_path": "/tmp/file.txt",
+		"contents": "hello world",
+		"timestamp": "2021-01-01T00:00:00Z"
+	}
+	`)
 
 	ctx := context.Background()
 
-	mockdb.EXPECT().TestInsert(ctx, string(message)).Return(nil)
+	mockdb.EXPECT().InsertFile(ctx, File{
+		User_id:       "1",
+		Absolute_path: "/tmp/file.txt",
+		Contents:      "hello world",
+		Timestamp:     time.Date(2021, 1, 1, 0, 0, 0, 0, time.UTC),
+	}).Return(nil)
 
 	err := processor.handleMessage(ctx, kafka.Message{Value: message})
 
