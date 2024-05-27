@@ -6,6 +6,9 @@ helm_chart(
     images = ["//src/rest-api/cmd:push"],
     install_name = "rest-api",
     stamp = 1,
-    substitutions = {"IMAGE_TAG": "rest-api-{STABLE_GIT_SHA}"},
+    substitutions = {
+        "IMAGE_TAG": "rest-api-{STABLE_GIT_SHA}",
+        "DB_PASSWORD": "{DB_PASSWORD}",
+    },
     values = "values.yaml",
 )

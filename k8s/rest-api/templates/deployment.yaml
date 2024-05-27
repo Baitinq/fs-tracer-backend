@@ -50,6 +50,8 @@ spec:
               secretKeyRef:
                 name: kafka-user-passwords
                 key: client-passwords
+          - name: DB_PASSWORD
+            value: {{ .Values.db.password }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

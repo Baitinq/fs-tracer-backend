@@ -11,6 +11,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/Baitinq/fs-tracer-backend/lib"
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 	"github.com/segmentio/kafka-go"
@@ -92,7 +93,7 @@ func (p Processor) process(ctx context.Context, cancel context.CancelFunc) {
 func (p Processor) handleMessage(ctx context.Context, m kafka.Message) error {
 	fmt.Printf("(%s): message at paritition %d: offset %d: %s = %s\n", time.Now().String(), m.Partition, m.Offset, string(m.Key), string(m.Value))
 
-	var file File
+	var file lib.File
 	err := json.Unmarshal(m.Value, &file)
 	if err != nil {
 		return err

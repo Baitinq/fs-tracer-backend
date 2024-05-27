@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/Baitinq/fs-tracer-backend/src/rest-api/handler"
+	"github.com/jmoiron/sqlx"
 	"github.com/segmentio/kafka-go"
 	"github.com/segmentio/kafka-go/sasl/plain"
 )
@@ -47,13 +48,22 @@ func main() {
 		AllowAutoTopicCreation: true,
 	}
 
-	handler := handler.NewHandler(kafka_writer)
+	db_password, ok := os.LookupEnv("DB_PASSWORD")
+	if !ok {
+		log.Fatal("DB_PASSWORD not set")
+	}
+	db, err := sqlx.Connect("postgres", fmt.Sprintf("postgres://postgres.slpoocycjgqsuoedhkbn:%s@aws-0-eu-central-1.pooler.supabase.com:5432/postgres", db_password))
+	if err != nil {
+		log.Fatal("cannot initalize db client", err)
+	}
+
+	handler := handler.NewHandler(db, kafka_writer)
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "Hello folks!")
 	})
-	mux.Handle("/payload", handler)
+	mux.Handle("/file/", handler)
 
 	http.ListenAndServe(":8080", mux)
 }

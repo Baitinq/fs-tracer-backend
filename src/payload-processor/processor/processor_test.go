@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Baitinq/fs-tracer-backend/lib"
 	"github.com/segmentio/kafka-go"
 	"github.com/stretchr/testify/require"
 	gomock "go.uber.org/mock/gomock"
@@ -28,7 +29,7 @@ func TestProcessMessage(t *testing.T) {
 
 	ctx := context.Background()
 
-	mockdb.EXPECT().InsertFile(ctx, File{
+	mockdb.EXPECT().InsertFile(ctx, lib.File{
 		User_id:       "1",
 		Absolute_path: "/tmp/file.txt",
 		Contents:      "hello world",

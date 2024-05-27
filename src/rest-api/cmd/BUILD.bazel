@@ -11,6 +11,7 @@ go_library(
     visibility = ["//visibility:private"],
     deps = [
         "//src/rest-api/handler",
+        "@com_github_jmoiron_sqlx//:sqlx",
         "@com_github_segmentio_kafka_go//:kafka-go",
         "@com_github_segmentio_kafka_go//sasl/plain",
     ],

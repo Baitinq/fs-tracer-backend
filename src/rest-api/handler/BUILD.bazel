@@ -1,9 +1,30 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_library")
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "handler",
-    srcs = ["handler.go"],
+    srcs = [
+        "db.go",
+        "handler.go",
+        "mock_db.go",
+    ],
     importpath = "github.com/Baitinq/fs-tracer-backend/src/rest-api/handler",
     visibility = ["//visibility:public"],
-    deps = ["@com_github_segmentio_kafka_go//:kafka-go"],
+    deps = [
+        "//lib",
+        "@com_github_jmoiron_sqlx//:sqlx",
+        "@com_github_lib_pq//:pq",
+        "@com_github_segmentio_kafka_go//:kafka-go",
+        "@org_uber_go_mock//gomock",
+    ],
+)
+
+go_test(
+    name = "handler_test",
+    srcs = ["handler_test.go"],
+    embed = [":handler"],
+    deps = [
+        "//lib",
+        "@com_github_stretchr_testify//require",
+        "@org_uber_go_mock//gomock",
+    ],
 )
