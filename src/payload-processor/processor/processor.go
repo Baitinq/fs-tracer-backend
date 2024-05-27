@@ -82,9 +82,8 @@ func (p Processor) process(ctx context.Context, cancel context.CancelFunc) {
 		err = p.handleMessage(ctx, m)
 		if err != nil {
 			log.Println("failed to handle message:", err)
-			continue
 		}
-		p.kafka_reader.CommitMessages(ctx, m)
+		p.handleResult(ctx, m, err)
 	}
 }
 
@@ -102,4 +101,12 @@ func (p Processor) handleMessage(ctx context.Context, m kafka.Message) error {
 		return err
 	}
 	return nil
+}
+
+func (p Processor) handleResult(ctx context.Context, m kafka.Message, err error) {
+	switch err {
+	// TODO: If its a recoverable error, don't commit.
+	default:
+		p.kafka_reader.CommitMessages(ctx, m)
+	}
 }
