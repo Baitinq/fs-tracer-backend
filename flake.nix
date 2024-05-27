@@ -28,6 +28,7 @@
             go
             gopls
             mockgen
+            supabase-cli
           ];
         };
       }
