@@ -41,15 +41,15 @@ func (m *MockDB) EXPECT() *MockDBMockRecorder {
 }
 
 // InsertFile mocks base method.
-func (m *MockDB) InsertFile(ctx context.Context, file lib.File) error {
+func (m *MockDB) InsertFile(ctx context.Context, file lib.File, user_id string) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "InsertFile", ctx, file)
+	ret := m.ctrl.Call(m, "InsertFile", ctx, file, user_id)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // InsertFile indicates an expected call of InsertFile.
-func (mr *MockDBMockRecorder) InsertFile(ctx, file any) *gomock.Call {
+func (mr *MockDBMockRecorder) InsertFile(ctx, file, user_id any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InsertFile", reflect.TypeOf((*MockDB)(nil).InsertFile), ctx, file)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InsertFile", reflect.TypeOf((*MockDB)(nil).InsertFile), ctx, file, user_id)
 }

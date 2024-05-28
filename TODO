@@ -1,4 +1,4 @@
 maybe we can remove helmsman with bazel
 better managing of secrets (maybe we shouldnt have environment variables)
-add db migrations
+test kafka with interface
 nixos-k3s repo

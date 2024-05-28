@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
-	"strings"
 	"testing"
 
 	"github.com/Baitinq/fs-tracer-backend/lib"
@@ -20,11 +19,12 @@ func TestHandleGet(t *testing.T) {
 	handler := Handler{db: db}
 
 	file := &lib.File{
+		User_id:       "USER_ID",
 		Absolute_path: "/tmp/file.txt",
 	}
-	db.EXPECT().GetLatestFileByPath(gomock.Any(), "/tmp/file.txt").Return(file, nil)
+	db.EXPECT().GetLatestFileByPath(gomock.Any(), "/tmp/file.txt", "USER_ID").Return(file, nil)
 
-	handler.handleGet(recorder, httptest.NewRequest(http.MethodGet, "/file/%2ftmp%2Ffile.txt", nil))
+	handler.handleGet(recorder, httptest.NewRequest(http.MethodGet, "/file/%2ftmp%2Ffile.txt", nil), "USER_ID")
 
 	require.Equal(t, http.StatusOK, recorder.Code)
 	require.Equal(t, fmt.Sprintln("File: ", file), recorder.Body.String())

@@ -41,16 +41,31 @@ func (m *MockDB) EXPECT() *MockDBMockRecorder {
 }
 
 // GetLatestFileByPath mocks base method.
-func (m *MockDB) GetLatestFileByPath(ctx context.Context, path string) (*lib.File, error) {
+func (m *MockDB) GetLatestFileByPath(ctx context.Context, path, user_id string) (*lib.File, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetLatestFileByPath", ctx, path)
+	ret := m.ctrl.Call(m, "GetLatestFileByPath", ctx, path, user_id)
 	ret0, _ := ret[0].(*lib.File)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetLatestFileByPath indicates an expected call of GetLatestFileByPath.
-func (mr *MockDBMockRecorder) GetLatestFileByPath(ctx, path any) *gomock.Call {
+func (mr *MockDBMockRecorder) GetLatestFileByPath(ctx, path, user_id any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLatestFileByPath", reflect.TypeOf((*MockDB)(nil).GetLatestFileByPath), ctx, path)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLatestFileByPath", reflect.TypeOf((*MockDB)(nil).GetLatestFileByPath), ctx, path, user_id)
+}
+
+// GetUserIDByAPIKey mocks base method.
+func (m *MockDB) GetUserIDByAPIKey(ctx context.Context, apiKey string) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetUserIDByAPIKey", ctx, apiKey)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetUserIDByAPIKey indicates an expected call of GetUserIDByAPIKey.
+func (mr *MockDBMockRecorder) GetUserIDByAPIKey(ctx, apiKey any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserIDByAPIKey", reflect.TypeOf((*MockDB)(nil).GetUserIDByAPIKey), ctx, apiKey)
 }
