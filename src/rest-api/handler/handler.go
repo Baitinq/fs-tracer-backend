@@ -6,7 +6,6 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"strings"
 	"time"
 
 	"github.com/jmoiron/sqlx"
@@ -54,8 +53,8 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h Handler) handleGet(w http.ResponseWriter, r *http.Request, user_id string) {
-	_, filePath, ok := strings.Cut(r.URL.Path, "/file/")
-	if !ok {
+	filePath := r.URL.Query().Get("path")
+	if filePath == "" {
 		http.Error(w, "Invalid file path", http.StatusBadRequest)
 		return
 	}

@@ -24,7 +24,7 @@ func TestHandleGet(t *testing.T) {
 	}
 	db.EXPECT().GetLatestFileByPath(gomock.Any(), "/tmp/file.txt", "USER_ID").Return(file, nil)
 
-	handler.handleGet(recorder, httptest.NewRequest(http.MethodGet, "/file/%2ftmp%2Ffile.txt", nil), "USER_ID")
+	handler.handleGet(recorder, httptest.NewRequest(http.MethodGet, "/file/?path=%2ftmp%2Ffile.txt", nil), "USER_ID")
 
 	require.Equal(t, http.StatusOK, recorder.Code)
 	require.Equal(t, fmt.Sprintln("File: ", file), recorder.Body.String())
