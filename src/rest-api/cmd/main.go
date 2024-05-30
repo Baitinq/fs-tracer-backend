@@ -63,7 +63,7 @@ func main() {
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "Hello folks!")
 	})
-	mux.Handle("/file/", handler)
+	mux.Handle("/api/v1/file/", handler)
 
 	http.ListenAndServe(":8080", mux)
 }
