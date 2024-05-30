@@ -19,20 +19,20 @@ func TestProcessMessage(t *testing.T) {
 	}
 
 	message := []byte(`
-	{
+	[{
 		"absolute_path": "/tmp/file.txt",
 		"contents": "hello world",
 		"timestamp": "2021-01-01T00:00:00Z"
-	}
+	}]
 	`)
 
 	ctx := context.Background()
 
-	mockdb.EXPECT().InsertFile(ctx, lib.File{
+	mockdb.EXPECT().InsertFiles(ctx, []lib.File{{
 		Absolute_path: "/tmp/file.txt",
 		Contents:      "hello world",
 		Timestamp:     time.Date(2021, 1, 1, 0, 0, 0, 0, time.UTC),
-	}, "USER_ID").Return(nil)
+	}}, "USER_ID").Return(nil)
 
 	err := processor.handleMessage(ctx, kafka.Message{Value: message}, "USER_ID")
 

@@ -9,7 +9,7 @@ import (
 
 //go:generate mockgen -source=$GOFILE -package=$GOPACKAGE -destination=mock_$GOFILE
 type DB interface {
-	InsertFile(ctx context.Context, file lib.File, user_id string) error
+	InsertFiles(ctx context.Context, files []lib.File, user_id string) error
 }
 
 type DBImpl struct {
@@ -22,8 +22,11 @@ func NewDB(db *sqlx.DB) DB {
 	return &DBImpl{db: db}
 }
 
-func (db DBImpl) InsertFile(ctx context.Context, file lib.File, user_id string) error {
-	file.User_id = user_id
-	_, err := db.db.NamedExecContext(ctx, "INSERT INTO private.file (user_id, absolute_path, contents, timestamp) VALUES (:user_id, :absolute_path, :contents, :timestamp)", file)
-	return err
+func (db DBImpl) InsertFiles(ctx context.Context, files []lib.File, user_id string) error {
+	for _, file := range files {
+		file.User_id = user_id
+		_, err := db.db.NamedExecContext(ctx, "INSERT INTO private.file (user_id, absolute_path, contents, timestamp) VALUES (:user_id, :absolute_path, :contents, :timestamp)", file)
+		return err
+	}
+	return nil
 }
