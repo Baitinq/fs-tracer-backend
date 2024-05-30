@@ -61,6 +61,11 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/" {
+			http.NotFound(w, r)
+			return
+		}
+
 		fmt.Fprint(w, "Hello folks!")
 	})
 	mux.Handle("/api/v1/file/", handler)
