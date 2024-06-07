@@ -25,7 +25,7 @@ func NewDB(db *sqlx.DB) DB {
 func (db DBImpl) InsertFiles(ctx context.Context, files []lib.File, user_id string) error {
 	for _, file := range files {
 		file.User_id = user_id
-		_, err := db.db.NamedExecContext(ctx, "INSERT INTO private.file (user_id, absolute_path, contents, timestamp) VALUES (:user_id, :absolute_path, :contents, :timestamp)", file)
+		_, err := db.db.NamedExecContext(ctx, "INSERT INTO public.file (user_id, absolute_path, contents, timestamp) VALUES (:user_id, :absolute_path, :contents, :timestamp)", file)
 		return err
 	}
 	return nil
