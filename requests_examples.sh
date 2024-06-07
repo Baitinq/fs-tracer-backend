@@ -1,5 +1,10 @@
 #!/bin/sh
 
+if [ -z "${FS_TRACER_API_KEY}" ]; then
+	echo "FS_TRACER_API_KEY is not set"
+	exit 1
+fi
+
 curl -H "API_KEY: ${FS_TRACER_API_KEY}" -X POST -d '
 [{
 	"timestamp": "2020-01-02T15:04:05Z",
