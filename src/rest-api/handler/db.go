@@ -26,7 +26,7 @@ func NewDB(db *sqlx.DB) DB {
 func (db DBImpl) GetLatestFileByPath(ctx context.Context, path string, user_id string) (*lib.File, error) {
 	var file lib.File
 	err := db.db.GetContext(ctx, &file, `
-		SELECT * FROM private.file
+		SELECT * FROM public.file
 		WHERE
 			user_id = $1
 			AND absolute_path = $2
@@ -47,7 +47,7 @@ func (db DBImpl) GetUserIDByAPIKey(ctx context.Context, apiKey string) (string, 
 
 	var userID string
 	err := db.db.GetContext(ctx, &userID, `
-		SELECT id FROM private.api_keys
+		SELECT user_id FROM public.api_key
 		WHERE api_key = $1
 		LIMIT 1
 	`, apiKey)
