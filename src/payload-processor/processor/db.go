@@ -24,14 +24,13 @@ func NewDB(db *sqlx.DB) DB {
 }
 
 func (db DBImpl) InsertFiles(ctx context.Context, files []lib.File, user_id string) error {
-	for _, file := range files {
-		file.User_id = user_id
-		//TODO: Do bulk insert
-		_, err := db.db.NamedExecContext(ctx, "INSERT INTO public.file (user_id, absolute_path, contents, timestamp) VALUES (:user_id, :absolute_path, :contents, :timestamp)", file)
-		if err != nil {
-			return err
-		}
-		log.Println("Inserted file: ", file)
+	for i := range files {
+		files[i].User_id = user_id
 	}
+	_, err := db.db.NamedExecContext(ctx, "INSERT INTO public.file (user_id, absolute_path, contents, timestamp) VALUES (:user_id, :absolute_path, :contents, :timestamp)", files)
+	if err != nil {
+		return err
+	}
+	log.Println("Inserted files: ", files)
 	return nil
 }
