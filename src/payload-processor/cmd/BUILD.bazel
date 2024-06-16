@@ -24,23 +24,23 @@ go_binary(
 )
 
 go_cross_binary(
-    name = "cmd_arm64",
-    platform = "@io_bazel_rules_go//go/toolchain:linux_arm64",
+    name = "cmd_amd64",
+    platform = "@io_bazel_rules_go//go/toolchain:linux_amd64",
     target = ":cmd",
     visibility = ["//visibility:public"],
 )
 
 pkg_tar(
     name = "tar",
-    srcs = [":cmd_arm64"],
+    srcs = [":cmd_amd64"],
 )
 
 oci_image(
     name = "image",
     base = "@distroless_base",
-    entrypoint = ["/cmd_arm64"],
-    # architecture = "arm64",
-    # os = "linux",
+    entrypoint = ["/cmd_amd64"],
+    #architecture = "amd64",
+    #os = "linux",
     tars = [":tar"],
 )
 

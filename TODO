@@ -2,4 +2,4 @@ maybe we can remove helmsman with bazel
 better managing of secrets (maybe we shouldnt have environment variables)
 test kafka with interface
 nixos-k3s repo
-what do we do about batching
+multi arch builds
