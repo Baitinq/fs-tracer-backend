@@ -3,3 +3,4 @@ better managing of secrets (maybe we shouldnt have environment variables)
 test kafka with interface
 nixos-k3s repo
 multi arch builds
+gitops?
