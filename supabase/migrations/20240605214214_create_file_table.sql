@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS public."file" (
-	id SERIAL PRIMARY KEY,
+	id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
 	user_id UUID NOT NULL,
 	absolute_path VARCHAR(4096) NOT NULL,
 	contents TEXT,
