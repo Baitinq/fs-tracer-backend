@@ -15,6 +15,7 @@ import (
 )
 
 func main() {
+	log.SetOutput(os.Stdout)
 	kafka_password, ok := os.LookupEnv("KAFKA_PASSWORD")
 	if !ok {
 		log.Fatal("KAFKA_PASSWORD not set")
