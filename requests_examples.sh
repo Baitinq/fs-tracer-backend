@@ -15,3 +15,4 @@ curl -H "API_KEY: ${FS_TRACER_API_KEY}" -X POST -d '
 
 curl -H "API_KEY: ${FS_TRACER_API_KEY}" -X GET http://leunam.dev:9999/api/v1/file/?path=%2Fhome%2Fuser%2Ffile.txt
 
+# curl -H "API_KEY: ${FS_TRACER_API_KEY}" -X GET http://leunam.dev:9999/api/v1/restored-files/

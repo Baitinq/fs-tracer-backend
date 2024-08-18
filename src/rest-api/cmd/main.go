@@ -70,6 +70,7 @@ func main() {
 		fmt.Fprint(w, "Hello folks!")
 	})
 	mux.Handle("/api/v1/file/", handler)
+	mux.Handle("/api/v1/restored-files/", handler)
 
 	http.ListenAndServe(":8080", mux)
 }

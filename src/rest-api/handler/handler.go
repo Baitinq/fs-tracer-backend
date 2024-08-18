@@ -2,10 +2,12 @@ package handler
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/jmoiron/sqlx"
@@ -53,6 +55,18 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h Handler) handleGet(w http.ResponseWriter, r *http.Request, user_id string) {
+	if strings.Contains(r.URL.Path, "/file/") {
+		h.handleGetFile(w, r, user_id)
+	} else if strings.Contains(r.URL.Path, "/restored-files/") {
+		h.handleGetRestoredFiles(w, r, user_id)
+	} else {
+		fmt.Println("Path: ", r.URL.Path)
+		http.NotFound(w, r)
+	}
+
+}
+
+func (h Handler) handleGetFile(w http.ResponseWriter, r *http.Request, user_id string) {
 	filePath := r.URL.Query().Get("path")
 	if filePath == "" {
 		http.Error(w, "Invalid file path", http.StatusBadRequest)
@@ -69,10 +83,39 @@ func (h Handler) handleGet(w http.ResponseWriter, r *http.Request, user_id strin
 		return
 	}
 
-	fmt.Fprintln(w, "File: ", file)
+	bytes, err := json.Marshal(file)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Internal server error: %s", err), http.StatusInternalServerError)
+		return
+	}
+
+	fmt.Fprint(w, string(bytes))
+}
+
+func (h Handler) handleGetRestoredFiles(w http.ResponseWriter, r *http.Request, user_id string) {
+	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
+	defer cancel()
+	files, err := h.db.GetAndDeleteRestoredFiles(ctx, user_id)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Internal server error: %s", err), http.StatusInternalServerError)
+		return
+	}
+
+	bytes, err := json.Marshal(files)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Internal server error: %s", err), http.StatusInternalServerError)
+		return
+	}
+
+	fmt.Fprint(w, string(bytes))
 }
 
 func (h Handler) handlePost(w http.ResponseWriter, r *http.Request, user_id string) {
+	if !strings.Contains(r.URL.Path, "/file/") {
+		http.NotFound(w, r)
+		return
+	}
+
 	bytes, err := io.ReadAll(io.Reader(r.Body))
 	if err != nil {
 		log.Fatal(err)

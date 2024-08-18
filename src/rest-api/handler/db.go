@@ -11,6 +11,7 @@ import (
 type DB interface {
 	GetLatestFileByPath(ctx context.Context, path string, user_id string) (*lib.File, error)
 	GetUserIDByAPIKey(ctx context.Context, apiKey string) (string, error)
+	GetAndDeleteRestoredFiles(ctx context.Context, user_id string) (*[]lib.File, error)
 }
 
 type DBImpl struct {
@@ -37,6 +38,27 @@ func (db DBImpl) GetLatestFileByPath(ctx context.Context, path string, user_id s
 		return nil, err
 	}
 	return &file, nil
+}
+
+func (db DBImpl) GetAndDeleteRestoredFiles(ctx context.Context, user_id string) (*[]lib.File, error) {
+	var files []lib.File
+	err := db.db.SelectContext(ctx, &files, `
+		SELECT * FROM public.restored_file
+		WHERE user_id = $1
+	`, user_id)
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = db.db.ExecContext(ctx, `
+		DELETE FROM public.restored_file
+		WHERE user_id = $1
+	`, user_id)
+	if err != nil {
+		return nil, err
+	}
+
+	return &files, nil
 }
 
 // TODO: Add test
