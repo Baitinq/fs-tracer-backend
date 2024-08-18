@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS public."restored_file" (
 	user_id UUID NOT NULL,
 	absolute_path VARCHAR(4096) NOT NULL,
 	contents TEXT,
-	original_timestamp TIMESTAMPTZ NOT NULL
+	timestamp TIMESTAMPTZ NOT NULL
 );
 
 ALTER TABLE public."restored_file" ENABLE ROW LEVEL SECURITY;
