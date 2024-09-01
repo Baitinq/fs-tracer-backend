@@ -8,4 +8,4 @@ The backend is composed of several microservices that work together to handle in
 
 Related:
 - https://github.com/baitinq/fs-tracer
-- https://github.com/baitinq/fs-tracer-backend
+- https://github.com/baitinq/fs-tracer-frontend
